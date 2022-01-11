@@ -632,31 +632,35 @@
             </div>
 
         <div class="section-header"  id="Step_1"> 
-
+        <br>
+        <br>
+        <br>
+        <br>
+        
           <h4 class="StepTitle">Step 1: Data Preprocessing for Susceptibility Mapping</h4> 
 
-          <p class="bullo"> 
+          <p class="bullo2"> 
 
           <br>
           <br>
 
           The first step was perhaps the heftier and more operation dense out of all the different parts of the project. 
 
-          The various passages had to be executed almost fastidiously and here we found most of the problems encountered in the whole process. All of the following operations were done on the FOS software QGIS.<br> 
+          The various passages had to be executed almost fastidiously and here we found most of the problems encountered in the whole process. All of the following operations were done on the FOS software QGIS.<br> <br> 
 
-          The first thing that had to be done after having obtained the data was to clip the different layers using as a mask our group’s sub-area. After this operation was completed for all the layers, we also had to resample the NDVI file according to the resolution of the DTM provided. All the layers, exception made for Landslide Inventory, had to be rasterized with the same resolution as the DTM. <br> 
+          The first thing that had to be done after having obtained the data was to clip the different layers using as a mask our group’s sub-area. After this operation was completed for all the layers, we also had to resample the NDVI file according to the resolution of the DTM provided. All the layers, exception made for Landslide Inventory, had to be rasterized with the same resolution as the DTM. <br> <br> 
 
-          Secondly, we had to extract some key factors from the DTM, more precisely the aspect, slope, plan and profile curvatures.<br> 
+          Secondly, we had to extract some key factors from the DTM, more precisely the aspect, slope, plan and profile curvatures.<br> <br> 
 
-          Afterwards, we had to use the raster calculator in order to find the No Landslide Zones, meaning those areas where the slope was lower than 20° or higher than 70°. With the resulting areas, we decided to remove some of the smaller areas. In our case we tried with 10, 50, 70 and 100 pixels and settled with 50 in the end, using the Sieve tool on QGIS. The resulted raster was vectorized in order to obtain polygons.<br> 
+          Afterwards, we had to use the raster calculator in order to find the No Landslide Zones, meaning those areas where the slope was lower than 20° or higher than 70°. With the resulting areas, we decided to remove some of the smaller areas. In our case we tried with 10, 50, 70 and 100 pixels and settled with 50 in the end, using the Sieve tool on QGIS. The resulted raster was vectorized in order to obtain polygons.<br> <br> 
 
-          Once we had vectorized the raster, we removed the No Landslide Zones that were overlapping the Landslide Inventory polygons. <br> 
+          Once we had vectorized the raster, we removed the No Landslide Zones that were overlapping the Landslide Inventory polygons. <br> <br> 
 
-          In the second part of the preprocessing of data we had to settle on a ratio of data to use as training-testing points for a machine learning model based on our dataset. The ratio selected was 70/30 (training/testing). To do this selection we used the tool Random Selection. In the end, we merged the processed landslide inventory layer with the No Landslide Zone one. <br> 
+          In the second part of the preprocessing of data we had to settle on a ratio of data to use as training-testing points for a machine learning model based on our dataset. The ratio selected was 70/30 (training/testing). To do this selection we used the tool Random Selection. In the end, we merged the processed landslide inventory layer with the No Landslide Zone one. <br> <br> 
 
-          To create random points inside the polygons, we had to create 350 0-hazard and 350 1-hazard points (150 for both the testing dataset). This was obtained by using the Select Features by Value tool and making a selection based on the Hazard and Train_Test fields. Eventually, we merged separately the two kind of point layers (testing/training). <br> 
+          To create random points inside the polygons, we had to create 350 0-hazard and 350 1-hazard points (150 for both the testing dataset). This was obtained by using the Select Features by Value tool and making a selection based on the Hazard and Train_Test fields. Eventually, we merged separately the two kind of point layers (testing/training). <br> <br> 
 
-          We then sampled the environmental factors with the training and testing point layers using the Point Sampling Tool plugin that we had installed beforehand. <br> 
+          We then sampled the environmental factors with the training and testing point layers using the Point Sampling Tool plugin that we had installed beforehand. <br> <br> 
 
           After everything was done, we were left with two layers: trainingPointsSampled and testingPointsSampled 
 
@@ -718,26 +722,29 @@
             </div>
 
         <div class="section-header"  id="Step_2"> 
-
+<br>
+        <br>
+        <br>
+        <br>
           <h4 class="StepTitle">Step 2: Susceptibility Map Generation</h4> 
 
-          <p class="bullo"> 
+          <p class="bullo2"> 
 
           <br>
           <br>
-          In the second step we generated the susceptibility map starting from the results obtained in the previous step. <br> 
+          In the second step we generated the susceptibility map starting from the results obtained in the previous step. <br> <br> 
 
-          To do this we used the <b>ModelMap </b> R tool for QGIS and as a <i> machine learning model </i>  we chose <b>Random Forest</b>, that through the use of training points and rasters of some environmental factors (Aspect, DTM, Distance to rivers, Distance to roads, Distance to faults, NDVI, Profile Curvature, Plan Curvature and DUSAF) generated the susceptibility map of our area. <br> 
+          To do this we used the <b>ModelMap </b> R tool for QGIS and as a <i> machine learning model </i>  we chose <b>Random Forest</b>, that through the use of training points and rasters of some environmental factors (Aspect, DTM, Distance to rivers, Distance to roads, Distance to faults, NDVI, Profile Curvature, Plan Curvature and DUSAF) generated the susceptibility map of our area. <br><br>  
 
-          Subsequently, we reclassified the newly obtained layer into two classes, 0 = [0 - 0.5) and 1 = [0.5 - 1), and we continued with the validation through the <i>accuracy assessment and sampling Python script, using the reclassified susceptibility map and the testing points</i>. We used said reclassified layer only in this step, while in the following ones the original susceptibility map will be used.<br> 
+          Subsequently, we reclassified the newly obtained layer into two classes, 0 = [0 - 0.5) and 1 = [0.5 - 1), and we continued with the validation through the <i>accuracy assessment and sampling Python script, using the reclassified susceptibility map and the testing points</i>. We used said reclassified layer only in this step, while in the following ones the original susceptibility map will be used.</p>  
 
            <center><img src="assets/img/errormat.jpeg" alt="ERR"><br> </center>
 
-          As a result of the validation we have obtained the following <i>error matrix</i>, where we can observe a <i>precision index value</i> of<b> 0.73</b>, a high enough value that makes the results of the susceptibility map more reliable.   
-
+          <p class="bullo2"><br> As a result of the validation we have obtained the following <i>error matrix</i>, where we can observe a <i>precision index value</i> of<b> 0.73</b>, a high enough value that makes the results of the susceptibility map more reliable. <br><br>     
+          </p>
           <!-- Susc Map | Error Matrix--> 
 
-  </p> 
+  
 
         </div> 
 
@@ -770,18 +777,21 @@
             </div>
 
         <div class="section-header"  id="Step_3"> 
-
+<br>
+        <br>
+        <br>
+        <br>
           <h4 class="StepTitle">Step 3: Data Preprocessing for Exposure Assessment</h4> 
 
-          <p class="bullo"> 
+          <p class="bullo2"> 
 
           <br>
           <br>
-          Before carrying out the exposure assessment, we had to process the data in order to make them compatible for the next operation. <br> 
+          Before carrying out the exposure assessment, we had to process the data in order to make them compatible for the next operation. <br><br>  
 
-          As a first operation we reprojected the population raster dataset using the same CRS of the other layers and we clipped it using the vector layer of our area.<br> 
+          As a first operation we reprojected the population raster dataset using the same CRS of the other layers and we clipped it using the vector layer of our area.<br> <br> 
 
-          After that we reclassified the susceptibility map layer into <i>4 classes </i>according to the landslide risk: [0, 0.25) = low; [0.25, 0.5) = moderate; [0.5, 0.75) = high; [0.75, 1] = very high. In the end, we resampled the susceptibility map layer using the resolution of the clipped population raster dataset: ~ 78 m.<br> 
+          After that we reclassified the susceptibility map layer into <i>4 classes </i>according to the landslide risk: [0, 0.25) = low; [0.25, 0.5) = moderate; [0.5, 0.75) = high; [0.75, 1] = very high. In the end, we resampled the susceptibility map layer using the resolution of the clipped population raster dataset: ~ 78 m.<br><br>  
 
           With the layers just obtained we could proceed to the exposure assessment. 
 
@@ -826,18 +836,21 @@
                 <span class="sr-only">Next</span>
               </a>
             </div>
-
+<br>
+        <br>
+        <br>
+        <br>
         <div class="section-header"  id="Step_4"> 
 
           <h4 class="StepTitle">Step 4: Exposure Assessment</h4> 
 
-          <p class="bullo"> 
+          <p class="bullo2"> 
 
           <br>
           <br>
-          Once we got to this point. we had to conclude our analysis in order to understand how many people living in our area inhabited a <i>high risk area</i>.<br> 
+          Once we got to this point, we had to conclude our analysis in order to understand how many people living in our area inhabited a <i>high risk area</i>.<br> <br> 
 
-The results show that even though the total area with high risk of landslides is not negligible, as it is possible to review in the plots below, the vast majority of the population lives in safer zones. 
+          The results show that even though the total area with high risk of landslides is not negligible, as it is possible to review in the plots below, the vast majority of the population lives in safer zones. 
 
           <!-- SuscMapPop | Grafico a torta--> 
 
@@ -863,7 +876,7 @@ The results show that even though the total area with high risk of landslides is
                 </div>
 
                 <div class="item">
-                  <img src="assets/img/areapie.png" alt="areapie">
+                  <center><img src="assets/img/areapie.png" alt="areapie"></center>
                   <div class="carousel-caption">
                     <h3>Pie Char Area</h3>
                   </div>
@@ -887,12 +900,15 @@ The results show that even though the total area with high risk of landslides is
                 <span class="sr-only">Next</span>
               </a>
             </div>
-
+<br>
+        <br>
+        <br>
+        <br>
         <div class="section-header"  id="Step_5"> 
 
           <h4 class="StepTitle">Step 5: Development of a Website and WebGIS</h4> 
 
-          <p class="bullo"> 
+          <p class="bullo2"> 
 
           <br>
           <br>
@@ -922,14 +938,14 @@ In the end, the most difficult parts of the website building experience came wit
                 <div class="item active">
                   <center><img src="assets/img/errorndvi.jpeg" alt="ErorNDVI"></center>
                   <div class="carousel-caption">
-                    <h3>Error in NDVI</h3>
+                    <h3 class="bullo3">Error in NDVI - we would keep getting a result similar to this one and it would cause a lot of issues in the subsequent operations</h3>
                   </div>
                 </div>
 
               <div class="item">
                   <center><img src="assets/img/errorRF.png" alt="ErrorRF"></center>
                   <div class="carousel-caption">
-                    <h3>Error in Random Forest</h3>
+                    <h3 class="bullo3">Error in Random Forest - We iterated RF many times, always getting the same error, before finding out the problem resided in the DUSAF layer </h3>
                   </div>
                 </div>
               </div>
@@ -1137,7 +1153,9 @@ In the end, the most difficult parts of the website building experience came wit
 
           <h3 class="section-title">Team</h3> 
 
-          <p class="section-description">The wonder team that worked relentlessly on this project</p> 
+          <p class="section-description">The wonder team that worked relentlessly on this project. <br><br>
+
+        Also a big thanks goes to our Professors, who replied to our countless e-mails and guided us along the project</p> 
 
         </div> 
 
@@ -1203,7 +1221,7 @@ In the end, the most difficult parts of the website building experience came wit
 
             <div class="member" data-aos="fade-up" data-aos-delay="300"> 
 
-              <div class="pic"><img src="assets/img/team-3.jpg" alt=""></div> 
+              <div class="pic"><img src="assets/img/MattiaK.jpeg" alt=""></div> 
 
               <h4>Mattia Koren</h4> 
 
@@ -1217,7 +1235,7 @@ In the end, the most difficult parts of the website building experience came wit
 
                 <a href=""><i class="bi bi-instagram"></i></a> -->
 
-                <a href=""><i class="bi bi-linkedin"></i></a> 
+                <a href="https://www.linkedin.com/in/mattia-koren-b7a4ba22a/"><i class="bi bi-linkedin"></i></a> 
 
               </div> 
 
@@ -1273,7 +1291,7 @@ In the end, the most difficult parts of the website building experience came wit
 
           <h3 class="section-title">Contact Us</h3> 
 
-          <p class="section-description">We are students at Politecnico di Milano, here you can find our e-mail addresses and the address of our University. Please, contact us with any doubts you may have!</p> 
+          <p class="section-description">We are students at Politecnico di Milano, here you can find our e-mail addresses and the address of our University. <br> <br> Please, contact us with any doubts you may have!</p> 
 
         </div> 
 
@@ -1282,7 +1300,7 @@ In the end, the most difficult parts of the website building experience came wit
  
 
       <!-- Uncomment below if you wan to use dynamic maps --> 
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12929.497769086289!2d9.222000718685404!3d45.47460752349309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c6f67dd11753%3A0x8e30fae1774a3377!2sPolitecnico%20di%20Milano!5e0!3m2!1sit!2sit!4v1641745641289!5m2!1sit!2sit" width="1500" height="380" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <center><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12929.497769086289!2d9.222000718685404!3d45.47460752349309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c6f67dd11753%3A0x8e30fae1774a3377!2sPolitecnico%20di%20Milano!5e0!3m2!1sit!2sit!4v1641745641289!5m2!1sit!2sit" width="1500" height="380" style="border:0;" allowfullscreen="" loading="lazy"></iframe></center>
       <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22864.11283411948!2d-73.96468908098944!3d40.630720240038435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sbg!4v1540447494452" width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 
  
